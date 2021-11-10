@@ -16,6 +16,36 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+
+        <%if (username) { %>
+        <div style="margin-left: 90px">
+          <h1>Hello:<%=username%></h1>
+          <form class="form-inline" action="/logout" method="POST">
+            <div class="form-group mb-3">
+              <button type="submit" class="btn btn-primary">logout</button>
+            </div>
+          </form>
+        </div>
+        <% } else{ %>
+        <form
+          class="form-inline"
+          action="/login"
+          method="POST"
+          style="margin-left: 500px"
+        >
+          <div class="form-group mb-3">
+            <label for="longURL">Login Name?:</label>
+            <input
+              class="form-control"
+              type="text"
+              name="username"
+              placeholder="username"
+              style="width: 150px; margin: 1em; position: relative"
+            />
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </div>
+        </form>
+        <% } %>
       </div>
     </div>
   </nav>
