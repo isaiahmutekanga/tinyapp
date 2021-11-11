@@ -6,7 +6,7 @@ Make sure cookies are cleard in the browser before using. Always clear first or 
 
 ## Final Product
 
-!["screenshot description"](#)
+!["screenshot of app logged out"](https://github.com/isaiahmutekanga/tinyapp/blob/master/docs/tiny%20app%20logged%20out.png)
 
 !["screenshot description"](#)
 
