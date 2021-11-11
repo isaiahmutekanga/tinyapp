@@ -8,7 +8,7 @@ Make sure cookies are cleard in the browser before using. Always clear first or 
 
 !["screenshot of app logged out"](https://github.com/isaiahmutekanga/tinyapp/blob/master/docs/tiny%20app%20logged%20out.png)
 
-!["screenshot description"](#)
+!["Screenshot of app logged in"](https://github.com/isaiahmutekanga/tinyapp/blob/master/docs/tinyapp%20logged%20in.png)
 
 ## Dependencies
 
