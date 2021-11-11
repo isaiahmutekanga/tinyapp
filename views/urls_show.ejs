@@ -1,43 +1,87 @@
-<%- include('partials/_header') %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Bootstrap CSS -->
+    <title>TinyApp: Shortened URL Details</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
-    <title>URL - TinyApp Example</title>
   </head>
-
   <body>
-    <div class="card text-center">
-      <div class="card-header"></div>
-      <div class="card-body">
-        <h5 class="card-title">TinyURL for: <%= fullURL %></h5>
-        <p class="card-text">
-          Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a> Long URL:
-          <a href="/u/<%= fullURL %>"><%= fullURL %></a>
-        </p>
-        <form class="form-inline" action="/urls/<%= shortURL %>" method="POST">
+    <%- include('partials/_header.ejs') %> <% if (fullURL === undefined) { %>
+    <p>
+      That's not a valid URL. Why not
+      <a href="/urls/new">make your own shortened URL</a> or
+      <a href="/urls/">view the ones you have shortened already</a>?
+    </p>
+    <% } else if (user === undefined) { %>
+    <!-- If a user is not logged in, show them the way to register or login -->
+    <p>
+      This page is used to edit the details of a shortened URL, and you need to
+      be logged in to use it.
+    </p>
+    <p>
+      You can still see <a href="/u/<%= shortURL %>">use the short link</a> (it
+      goes to <a href="<%= fullURL %>"><%= fullURL %></a>), but you can't edit
+      it.
+    </p>
+    <p>
+      If you were to <a href="/user/register">register</a> or
+      <a href="/user/login">login</a>, this page would be a
+      <strong>lot</strong> more interesting. <% } else if (urlUserID !== user.id
+      ) { %>
+      <!-- If a user is logged in, but doesn't own this URL, they can see where it goes or make their own -->
+    </p>
+
+    <p>It looks like this link doesn't belong to you.</p>
+    <p>
+      You can still see <a href="/u/<%= shortURL %>">use the short link</a> (it
+      goes to <a href="<%= fullURL %>"><%= fullURL %></a>), but you can't edit
+      it.
+    </p>
+    <p>
+      Why not <a href="/urls/new">make your own shortened URL</a> or
+      <a href="/urls/">view the ones you have shortened already</a>?
+    </p>
+    <% } else { %>
+    <!-- If logged in, show the update form-->
+    <h2>Shortened URL Details</h2>
+    <ul>
+      <li>Short URL: <a href="/u/<%= shortURL %>">/u/<%= shortURL %></a></li>
+      <li>Full URL: <a href="<%= fullURL %>"><%= fullURL %></a></li>
+      <li>
+        Update:
+        <form action="/urls/:id" method="POST" class="form-inline">
           <div class="form-group mb-2">
-            <label for="updatedfullURL">Enter a URL:</label>
-            <input
-              class="form-control"
-              type="text"
-              name="updatedfullURL"
-              placeholder="http://"
-              style="width: 300px; margin: 1em; position: center"
-            />
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
+          <label for="newLongURL">Enter an updated URL:</label>
+          <input
+          class="form-control"
+            id="newLongURL"
+            type="text"
+            name="newLongURL"
+            placeholder="<%= fullURL %>"
+          />
+          <input
+            id="shortURL"
+            type="hidden"
+            name="shortURL"
+            value="<%= shortURL %>"
+          />
+          <input
+            id="userID"
+            type="hidden"
+            name="userID"
+            value="<%= user.id %>"
+          />
+          <input type="submit" value="Update"  />
+        </div>
+          </form>
         </form>
-      </div>
-      <div class="card-footer text-muted"></div>
-    </div>
-    <!-- Bootstrap JS -->
+      </li>
+    </ul>
+    <% } %>
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

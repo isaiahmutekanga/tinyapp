@@ -20,16 +20,18 @@
         <%if (user) { %>
         <div style="margin: 50px; float: right; top: -40px">
           <h1>Hello, <%=user.email%></h1>
-          <form action="/logout" method="POST">
+          <form action="/user/logout" method="POST">
             <div class="form-group mb-3">
-              <button type="submit" class="btn btn-primary">logout</button>
+              <button type="submit" value="Logout" class="btn btn-primary">
+                logout
+              </button>
             </div>
           </form>
         </div>
         <% } else{ %>
         <div>
-          <a href="/login">Login Here</a>
-          <a href="/register">Register Here</a>
+          <a href="/user/login">Login Here</a>
+          <a href="/user/register">Register Here</a>
         </div>
         <% } %>
       </div>
