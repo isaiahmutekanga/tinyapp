@@ -19,7 +19,7 @@
 
         <%if (username) { %>
         <div style="margin: 50px; float: right; top: -40px">
-          <h1>Hello, <%=user.email%></h1>
+          <h1>Hello, <%=user%></h1>
           <form action="/logout" method="POST">
             <div class="form-group mb-3">
               <button type="submit" class="btn btn-primary">logout</button>

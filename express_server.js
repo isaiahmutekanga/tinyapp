@@ -8,9 +8,20 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
+// const urlDatabase = {
+//   b2xVn2: "http://www.lighthouselabs.ca",
+//   "9sm5xK": "http://www.google.com",
+// };
+
 const urlDatabase = {
-  b2xVn2: "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
+  b6UTxQ: {
+    longURL: "https://www.tsn.ca",
+    userID: "aJ48lW",
+  },
+  i3BoGr: {
+    longURL: "https://www.google.ca",
+    userID: "aJ48lW",
+  },
 };
 
 const users = {
@@ -32,7 +43,12 @@ app.get("/urls", (req, res) => {
     user: users[req.cookies["user_id"]],
     username: req.cookies["user_id"],
   };
-  res.render("urls_index", templateVars);
+
+  if (req.cookies["user_id"]) {
+    res.render("urls_index", templateVars);
+  } else {
+    res.send("<html><body>Please log in first</body></html>\n");
+  }
 });
 
 app.get("/urls/new", (req, res) => {
@@ -41,7 +57,11 @@ app.get("/urls/new", (req, res) => {
     user: users[req.cookies["user_id"]],
   };
 
-  res.render("urls_new", templateVars);
+  if (templateVars.username) {
+    res.render("urls_new", templateVars);
+  } else {
+    res.render("urls_login");
+  }
 });
 
 app.get("/", (req, res) => {
@@ -63,16 +83,20 @@ app.get("/hello", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL],
+    longURL: urlDatabase[req.params.shortURL].longURL,
     username: req.cookies["user_id"],
     user: users[req.cookies["user_id"]],
   };
-
-  res.render("urls_show", templateVars);
+  if (req.cookies["user_id"]) {
+    res.render("urls_show", templateVars);
+  } else {
+    res.send("<html><body>Please log in first</body></html>\n");
+  }
+  //res.render("urls_show", templateVars);
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  const longURL = urlDatabase[req.params.shortURL].longURL;
 
   res.redirect(longURL);
 });
@@ -87,21 +111,37 @@ app.get("/login", (req, res) => {
 
 app.post("/urls", (req, res) => {
   let shortURL = generateRandomString();
-  urlDatabase[shortURL] = req.body.longURL;
+  urlDatabase[shortURL] = {
+    longURL: req.body.longURL,
+    userID: "user_id",
+  };
+
   console.log(req.body); // Log the POST request body to the console
-  res.redirect(`/urls/${shortURL}`); // Respond with 'Ok' (we will replace this)
+
+  res.redirect(`/urls/${shortURL}`);
   console.log(urlDatabase);
 });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
-  delete urlDatabase[req.params.shortURL];
-  res.redirect(`/urls`);
+  console.log(req.params.shortURL);
+  console.log(req.cookies.user_id);
+  console.log(users);
+  console.log(urlDatabase);
+  if (req.params.shortURL !== req.cookies.user_id) {
+    res.send(
+      "<html><body>Sorry you dont have permission to delete this</body></html>\n"
+    );
+  } else {
+    res.redirect(`/urls`);
+    delete urlDatabase[req.params.shortURL];
+  }
 });
 
 app.post("/urls/:id", (req, res) => {
-  urlDatabase[req.params.id] = req.body.updatedlongURL;
+  urlDatabase[req.params.id].longURL = req.body.updatedlongURL;
 
   res.redirect(`/urls`);
+  //console.log(req.cookes["user_id"]);
 });
 
 app.post("/logout", (req, res) => {
@@ -119,17 +159,6 @@ app.post("/login", (req, res) => {
   } else {
     res.status(403).send("Wrong email or password");
   }
-
-  // for (let key in users) {
-  //   console.log(users[key]["email"]);
-  //   if (
-  //     users[key]["email"] === req.body.email &&
-  //     users[key]["password"] === req.body.password
-  //   ) {
-  //     res.cookie("user_id", users[key]["id"]);
-  //     res.redirect(`/urls`);
-  //   } else res.status(403).send("No email or password");
-  // }
 });
 
 app.post("/register", (req, res) => {
@@ -183,3 +212,5 @@ function authenticateUser(userdatabase, email, password) {
   }
   return false;
 }
+
+function urlsForUser(id) {}
