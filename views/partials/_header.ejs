@@ -17,9 +17,9 @@
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
 
-        <%if (username) { %>
+        <%if (user) { %>
         <div style="margin: 50px; float: right; top: -40px">
-          <h1>Hello, <%=user%></h1>
+          <h1>Hello, <%=user.email%></h1>
           <form action="/logout" method="POST">
             <div class="form-group mb-3">
               <button type="submit" class="btn btn-primary">logout</button>

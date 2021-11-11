@@ -16,18 +16,18 @@
     <div class="card text-center">
       <div class="card-header"></div>
       <div class="card-body">
-        <h5 class="card-title">TinyURL for: <%= longURL %></h5>
+        <h5 class="card-title">TinyURL for: <%= fullURL %></h5>
         <p class="card-text">
           Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a> Long URL:
-          <a href="/u/<%= longURL %>"><%= longURL %></a>
+          <a href="/u/<%= fullURL %>"><%= fullURL %></a>
         </p>
         <form class="form-inline" action="/urls/<%= shortURL %>" method="POST">
           <div class="form-group mb-2">
-            <label for="updatedlongURL">Enter a URL:</label>
+            <label for="updatedfullURL">Enter a URL:</label>
             <input
               class="form-control"
               type="text"
-              name="updatedlongURL"
+              name="updatedfullURL"
               placeholder="http://"
               style="width: 300px; margin: 1em; position: center"
             />
