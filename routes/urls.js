@@ -32,7 +32,7 @@ router.get("/new", (req, res) => {
     return res.render("urls_new", templateVars);
     // Else, send non-authenticated users to /login
   } else {
-    res.redirect("/login");
+    res.redirect("login");
   }
 });
 
